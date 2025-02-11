@@ -1,1 +1,16 @@
-@use '@/assets/styles/ui.scss';
+@use "@/assets/styles/ui.scss";
+
+.login {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	row-gap: 1rem;
+	margin: 2rem auto;
+	max-width: 344px;
+	height: 100%;
+	.login-buttons {
+		display: flex;
+		flex-direction: row;
+		column-gap: 1rem;
+	}
+}
