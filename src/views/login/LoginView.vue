@@ -17,7 +17,23 @@
 			>
 				Login Here
 			</v-btn>
-			<v-btn @click="forgotPassword()"> Forgot Password </v-btn>
+			<v-dialog max-width="500">
+				<template v-slot:activator="{ props: activatorProps }">
+					<v-btn v-bind="activatorProps">Forgot Password</v-btn>
+				</template>
+				<template v-slot:default="{ isActive }">
+					<v-card class="forgot-password">
+						<v-card-title>Forgot Password</v-card-title>
+						<v-card-text>
+							<v-text-field label="Email" />
+						</v-card-text>
+						<v-card-actions>
+							<v-btn @click="isActive.value = false">Close</v-btn>
+							<v-btn>Submit</v-btn>
+						</v-card-actions>
+					</v-card>
+				</template>
+			</v-dialog>
 		</div>
 	</v-form>
 </template>
