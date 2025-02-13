@@ -1,22 +1,35 @@
-@use "@/assets/styles/ui.scss";
+@use "@/assets/styles/ui";
 
 .login {
+	color: ui.$colors-general-text;
 	display: flex;
 	justify-content: center;
 	flex-direction: column;
 	row-gap: 1rem;
 	margin: 2rem auto;
-	max-width: 344px;
+	max-width: 500px;
 	height: 100%;
-	.login-buttons {
+	.login-form {
 		display: flex;
-		flex-direction: row;
-		column-gap: 1rem;
+		flex-direction: column;
+		row-gap: 1rem;
+		.login-buttons {
+			display: flex;
+			flex-direction: row;
+			column-gap: 1rem;
+		}
+	}
+	background-color: ui.$colors-ui-white;
+	border-radius: 1rem;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	padding: 1rem;
+	h1 {
+		text-align: center;
 	}
 }
 
 .forgot-password {
 	display: flex;
 	justify-content: center;
-	// align-items: center;
+	/* align-items: center; */
 }
