@@ -1,12 +1,16 @@
 <template>
 	<h1>Welcome</h1>
 	<v-form class="login" ref="form" v-model="valid" lazy-validation>
-		<v-text-field label="Username" v-model="username" :rules="[required]" />
+		<v-text-field
+			label="Username"
+			v-model="username"
+			:rules="[characterCount(3, username), required]"
+		/>
 		<v-text-field
 			label="Password"
 			v-model="password"
 			:type="'password'"
-			:rules="[eightChar, required]"
+			:rules="[characterCount(8, password), required]"
 		/>
 		<v-alert v-if="message" :type="messageType">{{ message }}</v-alert>
 		<div class="login-buttons">

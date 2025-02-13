@@ -40,10 +40,11 @@ export default {
 				}, 3000)
 			}
 		},
-		eightChar(value: string) {
+		characterCount(count: number, value: string) {
 			console.log("eightChar")
 			return (
-				value.length >= 8 || "Password must be at least 8 characters."
+				value.length >= count ||
+				`Password must be at least ${count} characters.`
 			)
 		},
 		required(value: string) {
@@ -51,11 +52,6 @@ export default {
 		},
 		forgotPassword() {
 			console.log("Forgot password")
-		}
-	},
-	computed: {
-		validPassword() {
-			return this.password.length > 0
 		}
 	}
 }
