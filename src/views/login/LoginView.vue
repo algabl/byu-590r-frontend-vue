@@ -11,7 +11,7 @@
 				label="Password"
 				v-model="password"
 				:type="'password'"
-				:rules="[characterCount(8, password), required]"
+				:rules="[characterCount(10, password), required]"
 			/>
 			<v-alert v-if="message" :type="messageType">{{ message }}</v-alert>
 			<div class="login-buttons">
@@ -72,8 +72,8 @@ export default {
 						"Your username and password can not be the same."
 					return
 				} else if (
-					// this.username != "admin" &&
-					this.password != "password"
+					this.username != "admin" &&
+					this.password != "password123"
 				) {
 					this.messageType = "error"
 					this.message = "Login failed."
