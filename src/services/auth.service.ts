@@ -10,7 +10,7 @@ class AuthService {
 			if (response.data.data.token) {
 				localStorage.setItem("user", JSON.stringify(response.data.data))
 			}
-			return response.data
+			return response.data.data
 		})
 	}
 
@@ -19,6 +19,7 @@ class AuthService {
 	}
 
 	register(user) {
+		console.log("inside service -- ", user)
 		return axios.post(`${API_URL}/register`, {
 			name: user.name,
 			email: user.email,
