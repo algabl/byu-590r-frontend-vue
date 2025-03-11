@@ -165,12 +165,6 @@ export default {
 				return
 			}
 
-			// if (this.email != "admin" && this.password != "password123") {
-			// 	this.messageType = "error"
-			// 	this.message = "Login failed."
-			// 	return
-			// }
-
 			const user = {
 				email: this.email,
 				password: this.password
