@@ -4,7 +4,7 @@ import authHeader from "./auth-header"
 class UserService {
 	getUser() {
 		return axios
-			.get(API_URL + "user", { headers: authHeader() })
+			.get(API_URL + "/user", { headers: authHeader() })
 			.then((response) => {
 				return response.data.data
 			})
@@ -13,7 +13,7 @@ class UserService {
 		let formData = new FormData()
 		formData.append("image", image)
 		return axios
-			.post(API_URL + "user/upload_avatar", formData, {
+			.post(API_URL + "/user/upload_avatar", formData, {
 				headers: authHeader("multipart")
 			})
 			.then((response) => {
@@ -22,14 +22,14 @@ class UserService {
 	}
 	removeAvatar() {
 		return axios
-			.delete(API_URL + "user/remove_avatar", { headers: authHeader() })
+			.delete(API_URL + "/user/remove_avatar", { headers: authHeader() })
 			.then((response) => {
 				return response.data.data
 			})
 	}
 	sendVerificationEmail(emailData) {
 		return axios
-			.post(API_URL + "user/send_verification_email", emailData, {
+			.post(API_URL + "/user/send_verification_email", emailData, {
 				headers: authHeader()
 			})
 			.then((response) => {
@@ -38,7 +38,7 @@ class UserService {
 	}
 	changeEmail(changeEmail) {
 		return axios
-			.post(API_URL + "user/change_email", changeEmail, {
+			.post(API_URL + "/user/change_email", changeEmail, {
 				headers: authHeader()
 			})
 			.then((response) => {

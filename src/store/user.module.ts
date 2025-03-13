@@ -49,6 +49,7 @@ export const user = {
 	},
 	mutations: {
 		setUser(state, user) {
+			console.log("user", user)
 			state.user = user
 		},
 		setEmail(state, user) {

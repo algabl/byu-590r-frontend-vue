@@ -40,7 +40,8 @@ export default {
 				return "Welcome " + this.authUser.name + "!"
 			},
 			avatarURL() {
-				return this.auth.user.avatar
+				console.log(this.user)
+				return this.authUser.avatar
 			}
 		})
 	},
@@ -84,10 +85,7 @@ export default {
 			this.$store
 				.dispatch("user/removeAvatar")
 				.then((response) => {
-					this.$store.commit(
-						"auth/uploadAvatarSuccess",
-						response.avatar
-					)
+					this.$store.commit("auth/removeAvatarSuccess")
 					this.profileIsUploading = false
 				})
 				.catch((error) => {
@@ -158,7 +156,7 @@ export default {
 				<template v-slot:activator="{ props }">
 					<v-btn icon v-bind="props">
 						<v-avatar>
-							<v-img v-if="avatarURL" src="{{avatarURL}}" />
+							<v-img v-if="avatarURL" :src="avatarURL" />
 							<v-icon v-else>mdi-account-circle</v-icon>
 						</v-avatar>
 					</v-btn>
@@ -192,7 +190,15 @@ export default {
 									<v-card>
 										<v-card-title>Profile</v-card-title>
 										<v-card-text>
-											<v-file-upload
+											<v-img
+												v-if="avatarURL"
+												:src="avatarURL"
+												width="500"
+												height="500"
+												class="mx-auto my-10"
+											></v-img>
+											<v-file-input
+												clearable
 												@change="onAvatarChange"
 												:loading="profileIsUploading"
 												:accept="[
@@ -200,7 +206,12 @@ export default {
 													'image/jpeg'
 												]"
 											>
-											</v-file-upload>
+											</v-file-input>
+											<v-btn
+												v-if="avatarURL"
+												@click="removeAvatar"
+												>Remove Avatar</v-btn
+											>
 										</v-card-text>
 									</v-card>
 								</template>

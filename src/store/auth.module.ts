@@ -1,3 +1,4 @@
+import { stat } from "fs"
 import authService from "../services/auth.service"
 
 const user = localStorage.getItem("user")
@@ -78,6 +79,18 @@ export const auth = {
 		},
 		forgotPasswordFailure(state) {
 			state.status.loggedIn = false
+		},
+		uploadAvatarSuccess(state, avatar) {
+			state.user.avatar = avatar
+		},
+		uploadAvatarFailure(state) {
+			console.log("uploadAvatarFailure")
+		},
+		removeAvatarSuccess(state) {
+			state.user.avatar = null
+		},
+		removeAvatarFailure(state) {
+			console.log("removeAvatarFailure")
 		}
 	}
 }
