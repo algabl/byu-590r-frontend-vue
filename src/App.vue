@@ -51,9 +51,9 @@ export default {
 	},
 
 	updated() {
-		if (this.isAuthenticated) {
-			this.$router.push({ name: "home" })
-		}
+		// if (this.isAuthenticated) {
+		// 	this.$router.push({ name: "home" })
+		// }
 	},
 	methods: {
 		logout() {
