@@ -49,12 +49,6 @@ export default {
 			this.getCurrentUser()
 		}
 	},
-
-	updated() {
-		// if (this.isAuthenticated) {
-		// 	this.$router.push({ name: "home" })
-		// }
-	},
 	methods: {
 		logout() {
 			this.$store.dispatch("auth/logout")
