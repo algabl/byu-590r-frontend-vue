@@ -40,7 +40,6 @@ export default {
 				return "Welcome " + this.authUser.name + "!"
 			},
 			avatarURL() {
-				console.log(this.user)
 				return this.authUser.avatar
 			}
 		})
@@ -58,7 +57,6 @@ export default {
 	},
 	methods: {
 		logout() {
-			console.log(this.$store.state)
 			this.$store.dispatch("auth/logout")
 		},
 		checkAuth(auth) {
@@ -69,6 +67,7 @@ export default {
 
 			this.profile.title = this.title
 			this.$store.dispatch("user/getUser").then((response) => {
+				console.log(response)
 				if (response.avatar) {
 					this.$store.commit(
 						"auth/uploadAvatarSuccess",
@@ -81,17 +80,17 @@ export default {
 			})
 		},
 		removeAvatar() {
-			this.profileIsUploading = true
+			this.removingAvatar = true
 			this.$store
 				.dispatch("user/removeAvatar")
 				.then((response) => {
 					this.$store.commit("auth/removeAvatarSuccess")
-					this.profileIsUploading = false
+					this.removingAvatar = false
 				})
 				.catch((error) => {
-					console.log(error)
+					console.error(error)
 					alert("Error. Try again")
-					this.profileIsUploading = false
+					this.removingAvatar = false
 				})
 		},
 		onAvatarChange(e) {
@@ -109,7 +108,7 @@ export default {
 					this.profileIsUploading = false
 				})
 				.catch((error) => {
-					console.log(error)
+					console.error(error)
 					alert("Error. Try again")
 					this.profileIsUploading = false
 				})
@@ -119,6 +118,7 @@ export default {
 		return {
 			profileDialog: false,
 			profileIsUploading: false,
+			removingAvatar: false,
 			verificationEmailLoading: false,
 			showEmailNotVerifiedDialog: false,
 			showChangeEmailTextField: false,
@@ -138,6 +138,15 @@ export default {
 			profilePictureImage: "",
 			emailOfVerification: ""
 		}
+	},
+	watch: {
+		isAuthenticated: {
+			handler(newValue) {
+				if (newValue && this.authUser) {
+					this.getCurrentUser()
+				}
+			}
+		}
 	}
 }
 </script>
@@ -151,6 +160,7 @@ export default {
 			<v-spacer></v-spacer>
 			<v-btn to="/" default>Home</v-btn>
 			<v-btn to="about">About</v-btn>
+			<v-btn to="temples">Temples</v-btn>
 
 			<v-menu>
 				<template v-slot:activator="{ props }">
@@ -208,7 +218,8 @@ export default {
 											>
 											</v-file-input>
 											<v-btn
-												v-if="avatarURL"
+												:disabled="!avatarURL"
+												:loading="removingAvatar"
 												@click="removeAvatar"
 												>Remove Avatar</v-btn
 											>
@@ -224,7 +235,7 @@ export default {
 				</v-card>
 			</v-menu>
 		</v-app-bar>
-		<v-main>
+		<v-main height="100%" class="overflow-y-auto">
 			<v-container>
 				<div v-if="isAuthenticated">
 					<RouterView />

@@ -5,6 +5,7 @@ import "./assets/styles/styles.scss"
 
 //  Plugins
 import vuetify from "./plugins/vuetify"
+
 import store from "./store"
 
 const app = createApp(App)

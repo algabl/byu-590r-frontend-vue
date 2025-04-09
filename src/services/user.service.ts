@@ -6,6 +6,7 @@ class UserService {
 		return axios
 			.get(API_URL + "/user", { headers: authHeader() })
 			.then((response) => {
+				console.log(response.data.data)
 				return response.data.data
 			})
 	}

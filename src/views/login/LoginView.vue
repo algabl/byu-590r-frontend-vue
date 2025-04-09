@@ -129,9 +129,6 @@
 	</div>
 </template>
 <script lang="ts">
-import { register } from "module"
-import { computed } from "vue"
-
 export default {
 	name: "LoginView",
 	emits: ["authenticate"],
@@ -159,7 +156,6 @@ export default {
 	},
 	methods: {
 		async submitLogin() {
-			console.log("submitLogin")
 			this.loading = true
 			if (!this.valid) {
 				return
@@ -233,7 +229,6 @@ export default {
 				)
 		},
 		characterCount(count: number, value: string) {
-			console.log("eightChar")
 			return (
 				value.length >= count ||
 				`Password must be at least ${count} characters.`
