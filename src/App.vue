@@ -4,6 +4,7 @@ import LoginView from "./views/login/LoginView.vue"
 import { mapState } from "vuex"
 import { ref } from "vue"
 import { VFileUpload } from "vuetify/labs/components"
+import { AxiosError } from "axios"
 export default {
 	setup() {
 		const theme = ref("dark")
@@ -60,18 +61,25 @@ export default {
 			this.profile.name = this.authUser.name
 
 			this.profile.title = this.title
-			this.$store.dispatch("user/getUser").then((response) => {
-				console.log(response)
-				if (response.avatar) {
-					this.$store.commit(
-						"auth/uploadAvatarSuccess",
-						response.avatar
-					)
-				}
-				if (!response.email_verified_at) {
-					this.showEmailNotVerifiedDialog = true
-				}
-			})
+			this.$store
+				.dispatch("user/getUser")
+				.then((response) => {
+					if (response.status === 401) {
+						throw response
+					}
+					if (response.avatar) {
+						this.$store.commit(
+							"auth/uploadAvatarSuccess",
+							response.avatar
+						)
+					}
+					if (!response.email_verified_at) {
+						this.showEmailNotVerifiedDialog = true
+					}
+				})
+				.catch((error: AxiosError) => {
+					this.$store.commit("auth/loginFailure")
+				})
 		},
 		removeAvatar() {
 			this.removingAvatar = true
