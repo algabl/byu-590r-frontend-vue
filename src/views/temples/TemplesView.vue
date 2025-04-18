@@ -137,14 +137,19 @@
 							<v-card-actions>
 								<v-spacer></v-spacer>
 								<v-btn
+									variant="elevated"
 									color="primary"
 									@click="saveEvent(temple.id)"
 									:disabled="!isEventFormValid"
 								>
-									Save Event
-								</v-btn>
-								<v-btn color="secondary" @click="resetEventForm"
-									>Cancel</v-btn
+									<v-progress-circular
+										v-if="eventFormIsLoading"
+										indeterminate
+										color="white"
+									></v-progress-circular>
+									<span v-if="!eventFormIsLoading"
+										>Save</span
+									></v-btn
 								>
 							</v-card-actions>
 						</v-card>
@@ -249,6 +254,7 @@ export default {
 				})
 		},
 		saveEvent(templeId: number) {
+			this.eventFormIsLoading = true
 			const action = this.eventForm.id
 				? "temples/updateEvent"
 				: "temples/createEvent"
@@ -266,6 +272,9 @@ export default {
 				.catch(() => {
 					this.eventMessageType = "error"
 					this.eventMessage = "Error saving event"
+				})
+				.finally(() => {
+					this.eventFormIsLoading = false
 				})
 		},
 		resetEventForm() {
@@ -297,6 +306,7 @@ export default {
 				description: ""
 			} as TempleEvent,
 			isEventFormValid: false,
+			eventFormIsLoading: false,
 			editingTempleId: null
 		}
 	}
