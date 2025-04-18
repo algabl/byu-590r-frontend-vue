@@ -1,7 +1,7 @@
 import axios from "axios"
 import API_URL from "./env"
 import authHeader from "./auth-header"
-import { Temple } from "../types"
+import { Temple, TempleEvent } from "../types"
 class TemplesService {
 	async getTemples() {
 		return axios
@@ -26,7 +26,6 @@ class TemplesService {
 		formData.append("walk_score", temple.walk_score.toString())
 		formData.append("bike_score", temple.bike_score.toString())
 		formData.append("transit_score", temple.transit_score.toString())
-		console.log("temple.temple_details", temple.temple_details)
 		if (temple.temple_details) {
 			formData.append(
 				"temple_details[architect]",
@@ -54,7 +53,6 @@ class TemplesService {
 			)
 		}
 		formData.append("_method", "PUT")
-		console.log("formData", formData)
 		return axios
 			.post(API_URL + "/temples/" + temple.id, formData, {
 				headers: authHeader("multipart")
@@ -116,6 +114,46 @@ class TemplesService {
 
 		return axios
 			.post(API_URL + "/temples", formData, {
+				headers: authHeader("multipart")
+			})
+			.then((response) => {
+				return response.data.data
+			})
+	}
+	async deleteEvent(eventId: number) {
+		return axios
+			.delete(API_URL + `/temple-events/${eventId}`, {
+				headers: authHeader()
+			})
+			.then((response) => {
+				return response.data.data
+			})
+	}
+	async updateEvent(event: TempleEvent) {
+		let formData = new FormData()
+		console.log("event", event)
+		formData.append("name", event.name)
+		formData.append("date", event.date)
+		if (event.description) formData.append("description", event.description)
+		formData.append("_method", "PUT")
+		return axios
+			.post(API_URL + "/temple-events/" + event.id, formData, {
+				headers: authHeader("multipart")
+			})
+			.then((response) => {
+				return response.data.data
+			})
+	}
+	async createEvent(templeId: number, event: TempleEvent) {
+		console.log("event", event)
+
+		let formData = new FormData()
+		formData.append("temple_id", templeId.toString())
+		formData.append("name", event.name)
+		formData.append("date", event.date)
+		if (event.description) formData.append("description", event.description)
+		return axios
+			.post(API_URL + "/temple-events", formData, {
 				headers: authHeader("multipart")
 			})
 			.then((response) => {

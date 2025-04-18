@@ -1,6 +1,6 @@
 import { error } from "console"
 import templesService from "../services/temples.service"
-import { Temple } from "../types"
+import { Temple, TempleEvent } from "../types"
 
 export interface TemplesState {
 	temples: Temple[]
@@ -54,8 +54,67 @@ export const temples = {
 					commit("deleteTempleSuccess", id)
 				},
 				(error) => {
-					commit("getTemplessFailure")
 					console.error("Error deleting temple:", error)
+					return Promise.reject(error)
+				}
+			)
+		},
+		deleteEvent(
+			{ commit },
+			{ templeId, eventId }: { templeId: number; eventId: number }
+		) {
+			return templesService.deleteEvent(eventId).then(
+				() => {
+					commit("deleteEventSuccess", {
+						templeId: templeId,
+						eventId: eventId
+					})
+				},
+				(error) => {
+					console.error("Error deleting event:", error)
+					return Promise.reject(error)
+				}
+			)
+		},
+		updateEvent(
+			{ commit },
+			{
+				templeId,
+				templeEvent
+			}: { templeId: number; templeEvent: TempleEvent }
+		) {
+			console.log("templeId", templeId)
+			console.log("templeEvent", templeEvent)
+			return templesService.updateEvent(templeEvent).then(
+				(response) => {
+					commit("updateEventSuccess", { templeId, event: response })
+					return Promise.resolve(response)
+				},
+				(error) => {
+					console.error("Error updating event:", error)
+					return Promise.reject(error)
+				}
+			)
+		},
+		createEvent(
+			{ commit },
+			{
+				templeId,
+				templeEvent
+			}: { templeId: number; templeEvent: TempleEvent }
+		) {
+			console.log("templeId", templeId)
+			console.log("event", templeEvent)
+			return templesService.createEvent(templeId, templeEvent).then(
+				(response) => {
+					commit("createEventSuccess", {
+						templeId: templeId,
+						event: response
+					})
+					return Promise.resolve(response)
+				},
+				(error) => {
+					console.error("Error creating event:", error)
 					return Promise.reject(error)
 				}
 			)
@@ -83,6 +142,45 @@ export const temples = {
 			const index = state.temples.findIndex((t) => t.id === id)
 			if (index !== -1) {
 				state.temples.splice(index, 1)
+			}
+		},
+		deleteEventSuccess(
+			state: TemplesState,
+			{ templeId, eventId }: { templeId: number; eventId: number }
+		) {
+			const index = state.temples.findIndex((t) => t.id === templeId)
+			if (index !== -1) {
+				const eventIndex = state.temples[index].temple_events.findIndex(
+					(e) => e.id === eventId
+				)
+				if (eventIndex !== -1) {
+					state.temples[index].temple_events.splice(eventIndex, 1)
+				}
+			}
+		},
+		updateEventSuccess(
+			state: TemplesState,
+			{ templeId, event }: { templeId: number; event: TempleEvent }
+		) {
+			const index = state.temples.findIndex((t) => t.id === templeId)
+			if (index !== -1) {
+				const eventIndex = state.temples[index].temple_events.findIndex(
+					(e) => e.id === event.id
+				)
+				if (eventIndex !== -1) {
+					state.temples[index].temple_events[eventIndex] = event
+				}
+			}
+		},
+		createEventSuccess(
+			state: TemplesState,
+			{ templeId, event }: { templeId: number; event: TempleEvent }
+		) {
+			console.log("templeId", templeId)
+			console.log("event", event)
+			const index = state.temples.findIndex((t) => t.id === templeId)
+			if (index !== -1) {
+				state.temples[index].temple_events.push(event)
 			}
 		}
 	},
