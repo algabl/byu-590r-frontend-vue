@@ -30,6 +30,7 @@ export const temples = {
 			return templesService.createTemple(temple).then(
 				(response) => {
 					commit("createTempleSuccess", response)
+					return Promise.resolve(response)
 				},
 				(error) => {
 					return Promise.reject(error)
@@ -40,6 +41,7 @@ export const temples = {
 			return templesService.updateTemple(temple).then(
 				(response) => {
 					commit("updateTempleSuccess", response)
+					return Promise.resolve(response)
 				},
 				(error) => {
 					return Promise.reject(error)

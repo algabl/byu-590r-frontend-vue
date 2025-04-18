@@ -3,13 +3,68 @@
 		<v-card-title>{{ title }}</v-card-title>
 		<v-card-text>
 			<v-form>
-				<v-text-field label="Name" v-model="tempTemple.name" />
+				<v-text-field
+					label="Name"
+					v-model="tempTemple.name"
+					:rules="[required]"
+				/>
 				<v-text-field
 					label="Longitude"
 					v-model="tempTemple.longitude"
+					:rules="[isType(tempTemple.longitude || 0, 'number')]"
 				/>
-				<v-text-field label="Latitude" v-model="tempTemple.latitude" />
-				<v-text-field label="status" v-model="tempTemple.status" />
+				<v-text-field
+					label="Latitude"
+					v-model="tempTemple.latitude"
+					:rules="[isType(tempTemple.latitude || 0, 'number')]"
+				/>
+				<v-text-field
+					label="Status"
+					v-model="tempTemple.status"
+					:rules="[required]"
+				/>
+				<v-number-input
+					:reverse="false"
+					controlVariant="default"
+					label="Walk Score"
+					v-model="tempTemple.walk_score"
+					:hideInput="false"
+					:inset="false"
+				></v-number-input>
+				<v-number-input
+					label="Bike Score"
+					v-model="tempTemple.bike_score"
+				/>
+				<v-number-input
+					label="Transit Score"
+					v-model="tempTemple.transit_score"
+				/>
+				<v-text-field
+					label="Architect"
+					v-model="tempTemple.temple_details.architect"
+				/>
+				<v-number-input
+					label="Square Footage"
+					v-model="tempTemple.temple_details.square_footage"
+				/>
+				<v-number-input
+					label="Number of Ordinance Rooms"
+					v-model="tempTemple.temple_details.number_ordinance_rooms"
+				/>
+				<v-number-input
+					label="Number of Sealing Rooms"
+					v-model="tempTemple.temple_details.number_sealing_rooms"
+				/>
+				<v-number-input
+					label="Number of Surface Parking Spots"
+					v-model="
+						tempTemple.temple_details.number_surface_parking_spots
+					"
+				/>
+				<v-text-field
+					label="Additional Notes"
+					v-model="tempTemple.temple_details.additional_notes"
+				/>
 				<v-img v-if="imagePreviewUrl" :src="imagePreviewUrl" />
 				<v-img
 					v-else="temple.temple_image"
@@ -46,8 +101,10 @@
 </template>
 <script lang="ts">
 import { mapState } from "vuex"
-import { Temple } from "../../types"
+import { Temple, TempleEvent } from "../../types"
 import { title } from "process"
+import { isType, required } from "../../validation"
+import { rules } from "eslint-plugin-vue"
 // optional
 
 export default {
@@ -81,7 +138,22 @@ export default {
 				transit_score: 0,
 				created_at: "",
 				updated_at: "",
-				deleted_at: ""
+				deleted_at: "",
+				temple_events: [] as TempleEvent[],
+				temple_details: {
+					id: 0,
+					temple_id: 0,
+					architect: "",
+					description: "",
+					square_footage: 0,
+					number_ordinance_rooms: 0,
+					number_sealing_rooms: 0,
+					number_surface_parking_spots: 0,
+					additional_notes: "",
+					created_at: "",
+					updated_at: "",
+					deleted_at: ""
+				}
 			}
 		}
 	},
@@ -113,7 +185,7 @@ export default {
 				})
 		},
 		updateTemple(temple: Temple) {
-			console.log("Temple updated", temple)
+			console.log("Temple updating", temple)
 			this.$store
 				.dispatch("temples/updateTemple", temple)
 				.then((response) => {
@@ -143,7 +215,9 @@ export default {
 				this.imagePreviewUrl = null // Clear the preview if no file is selected
 				this.tempTemple.temple_image = null
 			}
-		}
+		},
+		required,
+		isType
 	},
 	data: function () {
 		return {
@@ -159,8 +233,23 @@ export default {
 				transit_score: 0,
 				created_at: "",
 				updated_at: "",
-				deleted_at: ""
-			},
+				deleted_at: "",
+				temple_events: [] as TempleEvent[],
+				temple_details: {
+					id: 0,
+					temple_id: 0,
+					architect: "",
+					description: "",
+					square_footage: 0,
+					number_ordinance_rooms: 0,
+					number_sealing_rooms: 0,
+					number_surface_parking_spots: 0,
+					additional_notes: "",
+					created_at: "",
+					updated_at: "",
+					deleted_at: ""
+				}
+			} as Temple,
 			imagePreviewUrl: null,
 			formIsLoading: false,
 			messageType: "",

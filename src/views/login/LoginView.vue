@@ -8,7 +8,11 @@
 				:rules="[
 					characterCount(3, email),
 					required,
-					emailAndPassMatch(email, password)
+					stringsDoNotMatch(
+						email,
+						password,
+						'Email and password can not be the same.'
+					)
 				]"
 			/>
 			<v-text-field
@@ -18,7 +22,11 @@
 				:rules="[
 					characterCount(10, password),
 					required,
-					emailAndPassMatch(email, password)
+					stringsDoNotMatch(
+						email,
+						password,
+						'Email and password can not be the same.'
+					)
 				]"
 			/>
 			<v-alert v-if="message" :type="messageType">{{ message }}</v-alert>
@@ -102,9 +110,10 @@
 										v-model="register.c_password"
 										:type="'password'"
 										:rules="[
-											passwordMatch(
+											stringsMatch(
 												register.password,
-												register.c_password
+												register.c_password,
+												'Passwords do not match.'
 											)
 										]"
 									/>
@@ -129,6 +138,13 @@
 	</div>
 </template>
 <script lang="ts">
+import {
+	characterCount,
+	isEmail,
+	required,
+	stringsDoNotMatch,
+	stringsMatch
+} from "../../validation"
 export default {
 	name: "LoginView",
 	emits: ["authenticate"],
@@ -228,27 +244,11 @@ export default {
 					}
 				)
 		},
-		characterCount(count: number, value: string) {
-			return (
-				value.length >= count ||
-				`Password must be at least ${count} characters.`
-			)
-		},
-		emailAndPassMatch(email: string, password: string) {
-			return (
-				email != password || "Email and password can not be the same."
-			)
-		},
-		isEmail(value: string) {
-			const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-			return emailRegex.test(value) || "Email must be valid."
-		},
-		passwordMatch(password: string, confirmPassword: string) {
-			return password === confirmPassword || "Passwords do not match."
-		},
-		required(value: string) {
-			return !!value || "This field is required."
-		},
+		characterCount,
+		stringsDoNotMatch,
+		isEmail,
+		stringsMatch,
+		required,
 		forgotPassword() {
 			console.log("Forgot password")
 		}

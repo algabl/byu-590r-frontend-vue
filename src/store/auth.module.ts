@@ -63,10 +63,12 @@ export const auth = {
 		loginFailure(state) {
 			state.status.loggedIn = false
 			state.user = null
+			localStorage.removeItem("user")
 		},
 		logout(state) {
 			state.status.loggedIn = false
 			state.user = null
+			localStorage.removeItem("user")
 		},
 		registerSuccess(state) {
 			state.status.loggedIn = false

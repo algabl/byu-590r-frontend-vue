@@ -26,6 +26,33 @@ class TemplesService {
 		formData.append("walk_score", temple.walk_score.toString())
 		formData.append("bike_score", temple.bike_score.toString())
 		formData.append("transit_score", temple.transit_score.toString())
+		console.log("temple.temple_details", temple.temple_details)
+		if (temple.temple_details) {
+			formData.append(
+				"temple_details[architect]",
+				temple.temple_details.architect
+			)
+			formData.append(
+				"temple_details[square_footage]",
+				temple.temple_details.square_footage.toString()
+			)
+			formData.append(
+				"temple_details[number_ordinance_rooms]",
+				temple.temple_details.number_ordinance_rooms.toString()
+			)
+			formData.append(
+				"temple_details[number_sealing_rooms]",
+				temple.temple_details.number_sealing_rooms.toString()
+			)
+			formData.append(
+				"temple_details[number_surface_parking_spots]",
+				temple.temple_details.number_surface_parking_spots.toString()
+			)
+			formData.append(
+				"temple_details[additional_notes]",
+				temple.temple_details.additional_notes
+			)
+		}
 		formData.append("_method", "PUT")
 		console.log("formData", formData)
 		return axios
@@ -58,6 +85,32 @@ class TemplesService {
 		formData.append("walk_score", temple.walk_score.toString())
 		formData.append("bike_score", temple.bike_score.toString())
 		formData.append("transit_score", temple.transit_score.toString())
+		if (temple.temple_details) {
+			formData.append(
+				"temple_details[architect]",
+				temple.temple_details.architect
+			)
+			formData.append(
+				"temple_details[square_footage]",
+				temple.temple_details.square_footage.toString()
+			)
+			formData.append(
+				"temple_details[number_ordinance_rooms]",
+				temple.temple_details.number_ordinance_rooms.toString()
+			)
+			formData.append(
+				"temple_details[number_sealing_rooms]",
+				temple.temple_details.number_sealing_rooms.toString()
+			)
+			formData.append(
+				"temple_details[number_surface_parking_spots]",
+				temple.temple_details.number_surface_parking_spots.toString()
+			)
+			formData.append(
+				"temple_details[additional_notes]",
+				temple.temple_details.additional_notes
+			)
+		}
 
 		console.log("formData", formData)
 
